@@ -75,30 +75,36 @@ const CallList = ({ type }: CallListProps) => {
   return (
     <div className='grid grid-cols-1 gap-5 xl:grid-cols-2'>
       {calls && calls.length > 0 ? (
-        calls.map((meeting: Call | CallRecording) => (
-          <MeetingCard
-            key={(meeting as Call).id}
-            icon={
-              type === 'ended' ? '/icons/previous.svg' :
-                type === 'upcoming' ? '/icons/upcoming.svg' : '/icons/recordings.svg'
-            }
-            buttonText={type === 'recordings' ? 'Play' : 'Start'}
-            title={
-              (meeting as Call).state?.custom?.description?.substring(0, 26) || 
-              (meeting as Call)?.filename?.substring(0, 20) || 'No description'
-            }
-            date={
-              (meeting as Call).state?.startsAt?.toLocaleString() ||
-              (meeting as Call).state?.startedAt?.toLocaleString()
-            }
-            isPreviousMeeting={type === 'ended'}
-            buttonIcon1={type === 'recordings' ? '/icons/play.svg' : undefined}
-            handleClick={type === 'recordings'
-              ? () => router.push(`${meeting?.url}`)
-              : () => router.push(`/meeting/${meeting.id}`)}
-            link={type === 'recordings' ? meeting?.url : `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${meeting.id}`}
-          />
-        ))
+        calls.map((meeting: Call | CallRecording) => {
+          const isRecording = (meeting as CallRecording).filename !== undefined;
+
+          return (
+            <MeetingCard
+              key={isRecording ? (meeting as CallRecording).id : (meeting as Call).id}
+              icon={
+                type === 'ended' ? '/icons/previous.svg' :
+                  type === 'upcoming' ? '/icons/upcoming.svg' : '/icons/recordings.svg'
+              }
+              buttonText={type === 'recordings' ? 'Play' : 'Start'}
+              title={
+                isRecording
+                  ? (meeting as CallRecording).filename?.substring(0, 20) || 'No description'
+                  : (meeting as Call).state?.custom?.description?.substring(0, 26) || 'No description'
+              }
+              date={
+                isRecording
+                  ? new Date((meeting as CallRecording).start_time).toLocaleString()
+                  : (meeting as Call).state?.startsAt?.toLocaleString()
+              }
+              isPreviousMeeting={type === 'ended'}
+              buttonIcon1={type === 'recordings' ? '/icons/play.svg' : undefined}
+              handleClick={type === 'recordings'
+                ? () => router.push(`${(meeting as CallRecording)?.url}`)
+                : () => router.push(`/meeting/${(meeting as Call).id}`)}
+              link={type === 'recordings' ? (meeting as CallRecording)?.url : `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${(meeting as Call).id}`}
+            />
+          );
+        })
       ) : (
         <h1>{noCallsMessage}</h1>
       )}
