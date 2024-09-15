@@ -44,9 +44,16 @@ const CallList = ({type}:{type:'ended'|'upcoming'|'recordings'}) => {
     const fetchRecordings=async()=>{
       try {
         const callData=await Promise.all(callRecordings.map((meeting)=>meeting.queryRecordings()))
-        const recordingss=callData.filter(call=>call.recordings.length>0)
-        .flatMap(call=>call.recordings)
-        setRecordings(recordingss)
+        const recordingss = callData
+        .filter(call => call.recordings.length > 0)
+        .flatMap(call => call.recordings)
+        .map(recording => ({
+          ...recording,
+          end_time: new Date(recording.end_time), // Convert string to Date
+        }));
+      
+      setRecordings(recordingss);
+      
         
       } catch (error) {
         toast({title: "Try again later"})
