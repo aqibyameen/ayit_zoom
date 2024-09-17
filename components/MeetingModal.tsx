@@ -44,7 +44,7 @@ buttonIcon}:MeetingModalProps) => {
 <Button className='bg-blue-1 focus-visible:ring-0 focus-visible:ring-offset-0'
 onClick={handleCLick}>
     {buttonIcon && (
-        <Image src={buttonIcon} alt='button icon ' width={13} height={13} /> 
+        <Image src={`${buttonIcon}`} alt='button icon ' width={13} height={13} /> 
     )}
     &nbsp;
     {buttonText || 'Schedule Meeting'}
