@@ -105,7 +105,7 @@ const MeetingTypeList = () => {
       onClose={ ()=>setMeetingState(undefined)}
       title="Create Meeting"
       className="text-center"
-      handleCLick={CreateMeeting}
+      handleClick={CreateMeeting}
      >
      <div className="flex flex-col gap-2 5">
       <label className="text-base text-normal">
@@ -140,7 +140,7 @@ className='w-full rounded bg-dark-3 p-2 focus:outline-none'
     title="Meeting Created"
     className="text-center"
     buttonText="Copy Meeting Link"
-    handleCLick={()=>{
+    handleClick={()=>{
       navigator.clipboard.writeText(MeetingLink)
       toast({
         title:"Meeting link copied successfully",
@@ -160,7 +160,7 @@ className='w-full rounded bg-dark-3 p-2 focus:outline-none'
   title="Start an instant meeting"
   className="text-center"
   buttonText="Start Meeting"
-  handleCLick={CreateMeeting}
+  handleClick={CreateMeeting}
 
 
 />
@@ -170,7 +170,7 @@ className='w-full rounded bg-dark-3 p-2 focus:outline-none'
   title="Type the link here"
   className="text-center"
   buttonText="Join Meeting"
-  handleCLick={()=>router.push(value.link)}
+  handleClick={()=>router.push(value.link)}
 
 >
 <Input placeholder='Meeting link here'
